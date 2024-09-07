@@ -27,6 +27,7 @@ Overall, Orma empowers developers to efficiently manage data within Google Sheet
     - [Installation](#Installation)
     - [Open Databases and Tables](#Open-Databases-and-Tables)
     - [Crud Operations](#Crud-Operations)
+    - [Validation](#Data-Validation)
     - [Other Functions](#Other-functions)
 - [Authors](#Authors)
 - [License](#License)
@@ -78,8 +79,8 @@ Logger.log(users._info);
     "_findManyByQuery":"get all the records by a specific query",
     "_findManyBy":"get all the records by a specific column from a given value",
     "_all":"get all the records",
-    "_id": "creates an incremental id for the database, or a uuid."
-
+    "_id": "creates an incremental id for the database, or a uuid.",
+    "_schema":"the schema of the table"
 }
 */
 
@@ -354,6 +355,211 @@ To delete multiple elements simultaneously after obtaining them, simply invoke t
 const manyUsers = users._findManyBy("name","Matteo");
 manyUsers._delete();
 ```
+
+## Data Validation
+Starting from version 7 of Orma, it will be possible to assign a schema to tables, enabling data validation during CRUD operations.
+
+### Install Orma Valid
+Before you start creating table schemas, you will need to install the `Orma Valid` library, which provides predefined methods for performing the necessary validations.
+
+```bash
+  1vWTKm6a_C_gTomlFnbREJ5ResvmJlgneFsHDgPv5mt0BvozXHeIaadtD
+```
+
+### Create a schema
+The `_schema` property is an Orma attribute of the `Table` entity. Once you obtain a table, you can define a schema for it if needed.
+
+The schema is an object where the keys are the table columns (the headers in Google Sheet) and the values are arrays of objects, each specifying the required validation.
+
+Each object must include the `valid` property, which contains a function from the `ORMA_VALID` library (be careful not to call the function directly within the object). Some methods from `ORMA_VALID` require arguments to work correctly. In such cases, in addition to the valid property, you will also need to provide the `args` property, which should be an array of values.
+
+Let's see an example:
+
+```javascript
+//Define db
+const db = ORMA.openDb();
+
+//Get Tables from db
+const tables = db._getTables();
+const { authors, books } = tables
+
+//Defining Schema
+books._schema = {
+  id: [
+    { valid: ORMA_VALID.isNumber },
+    { valid: ORMA_VALID.isNotNull },
+  ],
+  name: [
+    { valid: ORMA_VALID.isString },
+    { valid: ORMA_VALID.isTrimmed },
+    { valid: ORMA_VALID.hasMinLength, args: [2] },
+    { valid: ORMA_VALID.hasMaxLength, args: [256] },
+  ],
+  author_id: [
+    { valid: ORMA_VALID.isNumber },
+    { valid: ORMA_VALID.isNotNull },
+  ],
+  pages: [
+    { valid: ORMA_VALID.isNumber },
+    { valid: ORMA_VALID.isBetween, args: [1, 5000] },
+  ],
+  type: [
+    { valid: ORMA_VALID.isString },
+    { valid: ORMA_VALID.isTrimmed },
+    { valid: ORMA_VALID.isEnum, args: ["Novels", "Essays", "Comics"] },
+
+  ]
+}
+```
+
+In this way, `Orma` will validate your requests before executing CRUD functions and will return errors if the validation fails.
+
+### Best Practice
+As mentioned earlier, validation must be added to the `_schema` property of the table entity, so it should be declared before performing CRUD operations. For clarity and to maintain scalable code, we recommend isolating table declarations and _schema building in a separate function, as shown below:
+
+```javascript
+function allTables() {
+  //Define db
+  const db = ORMA.openDb();
+
+  //Get Tables from db
+  const tables = db._getTables();
+  const { authors, books } = tables
+
+  //Defining Book Schema
+  books._schema = {
+    id: [
+      { valid: ORMA_VALID.isNumber },
+      { valid: ORMA_VALID.isNotNull },
+    ],
+    name: [
+      { valid: ORMA_VALID.isString },
+      { valid: ORMA_VALID.isTrimmed },
+      { valid: ORMA_VALID.hasMinLength, args: [2] },
+      { valid: ORMA_VALID.hasMaxLength, args: [256] },
+    ],
+    author_id: [
+      { valid: ORMA_VALID.isNumber },
+      { valid: ORMA_VALID.isNotNull },
+    ],
+    pages: [
+      { valid: ORMA_VALID.isNumber },
+      { valid: ORMA_VALID.isBetween, args: [1, 5000] },
+    ],
+    type: [
+      { valid: ORMA_VALID.isString },
+      { valid: ORMA_VALID.isTrimmed },
+      { valid: ORMA_VALID.isEnum, args: ["Novels", "Essays", "Comics"] },
+
+    ]
+  }
+
+  //Defining Authors Schema
+  authors._schema = {
+    id: [
+      { valid: ORMA_VALID.isNumber },
+      { valid: ORMA_VALID.isNotNull },
+    ],
+    first_name: [
+      { valid: ORMA_VALID.isString },
+      { valid: ORMA_VALID.isTrimmed },
+      { valid: ORMA_VALID.hasMinLength, args: [2] },
+      { valid: ORMA_VALID.hasMaxLength, args: [256] },
+    ],
+    last_name: [
+      { valid: ORMA_VALID.isString },
+      { valid: ORMA_VALID.isTrimmed },
+      { valid: ORMA_VALID.hasMinLength, args: [2] },
+      { valid: ORMA_VALID.hasMaxLength, args: [256] },
+    ],
+  }
+
+  return {
+    authors,
+    books
+  }
+
+}
+```
+
+In this way, you can call the `allTables` function from anywhere in your code and retrieve the tables with the correct schema.
+
+### Available validations
+#### Type Validation
+Type validation ensures that a value conforms to the expected data type
+| Valid | Args| Details|
+|------------|----------|----------|
+|`isBoolean` |  undefined  | Checks if a value is boolean  |
+| `inNumber` |  undefined | Checks if a value is number  |
+| `isString` |  undefined | Checks if a value is string   |
+| `isNotNull`|  undefined | DChecks if a value is not null   |
+
+#### Number Validations
+Number validation ensures that a value meets specified criteria for numeric data
+
+| Valid | Args| Details|
+|------------|----------|----------|
+| `isGreaterThen`|[`number`] |Checks if a number is greater then the first argument|
+|`isLessThen`|[`number`] |Checks if a number is smaller then the first argument|
+|`isGreaterOrEqualto`|[`number`] |Checks if a number is greater or equal to the first argument|
+|`isLessOrEqualto`|[`number`] |Checks if a number is smaller or equal to the first argument|
+|`isEqualTo`|[`number`] |Checks if a number is equal to the first argument|
+|`isBetween`|[`number`,`number`] |Checks if a number is inside the range defined by the first and second arguments, inclusive|
+|`isNotBetween`|[`number`,`number`] |Checks if a number is outside the range defined by the first and second arguments, inclusive|
+|`isInteger`|undefined |Checks if a number is an integer number|
+|`isDecimal`|undefined |Checks if a number is a decimal number|
+
+#### String Validations
+String validation ensures that a value meets specific criteria for text data
+| Valid | Args| Details|
+|------------|----------|----------|
+|`hasMaxLength`|[`number`]|Checks if a string has no more than the number of characters specified by the first argument|
+|`hasMinLength`|[`number`]|Checks if a string has more than the number of characters specified by the first argument|
+|`isURL`|undefined|Checks if a string is a URL|
+|`isEmail`|undefined|Checks if a string is an email|
+|`isPassword`|undefined|Checks if a string is at least 10 characters long and include at least one lowercase letter, one uppercase letter, one digit, and one special character|
+|`isTrimmed`|undefined|Checks if a string is trimmed|
+|`isUpperCase`|undefined|Checks if a string is uppercase|
+|`isLowerCase`|undefined|Checks if a string is lowercase|
+|`isJSON`|undefined|Checks if a string is a valid JSON|
+
+#### Other Validations
+| Valid | Args| Details|
+|------------|----------|----------|
+|`isUnique` | undefined|Ensures that a value must be unique|
+|`isNotMutable` | undefined|Ensures that a value is not editable |
+|`isEnum` | [...`any`]|Ensures that a value is one of the values specified in the arguments |
+
+#### Custom Validations Functions
+In `Orma`, you can create custom validation functions and use them just like the functions provided in the ORMA_VALID library.
+
+Here is an example of how to construct a custom validation function:
+
+```javascript
+function customValidation() {
+  //This function returns the data you need to make your custom validation
+  const data = ORMA_VALID.getArguments(arguments);
+  const { table, id, key, value, args} = data;
+ 
+  //Build your own validation
+  if (value) {
+    return true
+  } else {
+    throw new Error("not valid")
+  }
+}
+```
+
+Let’s take a closer look at the function above: declaring the variable data you will call a function from the ORMA_VALID library that returns an object containing the arguments needed to create a custom validation function:
+
+* `table`: the table to which the value to validate belongs
+* `id`:  the id of the element to wich the value to validate belongs
+* `key`: the key of the value (column name)
+* `value`: the value you want to validate
+* `args`: the array you optionally pass to the `args` property within the table's `_schema` property.
+
+
+
 ## Other Functions
 This section provides various functions designed to facilitate the use of the Orma library, making the user's work simpler and more efficient.
 
