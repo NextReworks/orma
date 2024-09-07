@@ -15,11 +15,11 @@ function hash(value, salt = "") {
         return hash;
       }
       else {
-        throw new Error(ENV.MESSAGES.SALT_MUST_BE_STRING);
+        throw new Error(ENV.MESSAGES.SALT_MUST_BE_STRING.replace(ENV.PLACEHOLDERS.ONE,salt));
       }
     }
     else {
-      throw new Error(ENV.MESSAGES.HASH_MUST_BE_STRING);
+      throw new Error(ENV.MESSAGES.HASH_MUST_BE_STRING.replace(ENV.PLACEHOLDERS.ONE,value));
     }
   } catch (error) {
     throw new Error(error.stack);
@@ -40,7 +40,7 @@ function sha256_(str) {
       return hash;
     }
     else {
-      throw new Error(ENV.MESSAGES.HASH_MUST_BE_STRING);
+      throw new Error(ENV.MESSAGES.HASH_MUST_BE_STRING.replace(ENV.PLACEHOLDERS.ONE,str));
     }
   } catch (error) {
     throw new Error(error.stack);
