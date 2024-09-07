@@ -15,6 +15,7 @@ function getTables_() {
       //
       const name = toSnakeCase_(sheet.getName());
       res[name] = sheet;
+      sheet._schema = {};
       sheet._create = create_;
       sheet._createMany = createMany_;
       sheet._find = find_;
@@ -25,6 +26,7 @@ function getTables_() {
       sheet._all = all_;
       sheet._id = handleId_
       sheet._info = JSON.stringify({
+        _schema: ENV.MESSAGES.SCHEMA,
         _create: ENV.MESSAGES.CREATE,
         _createMany: ENV.MESSAGES.CREATE_MANY,
         _find: ENV.MESSAGES.FIND,
