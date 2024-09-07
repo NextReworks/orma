@@ -26,7 +26,7 @@ function handleId_(uuid = false) {
       return newId;
     }
     else {
-      throw new Error(ENV.MESSAGES.UUID_MUST_BE_BOOL);
+      throw new Error(ENV.MESSAGES.UUID_MUST_BE_BOOL.replace(ENV.PLACEHOLDERS.ONE,uuid));
     }
   } catch (error) {
     throw new Error(error.stack);
