@@ -1,6 +1,16 @@
 # Changelog
 Thanks to this file, you will always be up-to-date on the health status of this library and stay informed about new releases, implementations, and bug fixes.
 
+## [Version 8] - MINOR RELEASE - 2024-09-07
+
+### Added
+- Validation controls for integration with `ORMA_VALID` Version 1.
+- A counter to track how many times `orma` is used.
+- Custom error messages for enhanced clarity.
+
+### Fixed
+- Removed redundancies in the code to improve performance and readability.
+
 ## [Version 7] - MINOR RELEASE - 2024-06-21
 
 ### Added
