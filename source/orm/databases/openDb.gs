@@ -13,11 +13,8 @@
 function openDbById(id) {
   try {
     const ss = SpreadsheetApp.openById(id);
-    ss._getTables = getTables_
-    ss._info = JSON.stringify({
-      _getTables: ENV.MESSAGES.GET_TABLES
-    });
-    return ss;
+    const boundedSs = getBoundedSpreadsheet_(ss)
+    return boundedSs;
   }
   catch (error) {
     throw new Error(error.stack)
@@ -33,11 +30,8 @@ function openDbById(id) {
  */
 function openDbBySpreadsheet_(ss) {
   try {
-    ss._getTables = getTables_
-    ss._info = JSON.stringify({
-      _getTables: ENV.MESSAGES.GET_TABLES
-    });
-    return ss;
+    const boundedSs = getBoundedSpreadsheet_(ss)
+    return boundedSs;
   }
   catch (error) {
     throw new Error(error.stack)
@@ -53,11 +47,8 @@ function openDbBySpreadsheet_(ss) {
 function openActiveDb_() {
   try {
     const ss = SpreadsheetApp.getActiveSpreadsheet();
-    ss._getTables = getTables_
-    ss._info = JSON.stringify({
-      _getTables: ENV.MESSAGES.GET_TABLES
-    });
-    return ss;
+    const boundedSs = getBoundedSpreadsheet_(ss)
+    return boundedSs;
   }
   catch (error) {
     throw new Error(error.stack)
@@ -74,11 +65,8 @@ function openActiveDb_() {
 function openDbByUrl_(url) {
   try {
     const ss = SpreadsheetApp.openByUrl(url);
-    ss._getTables = getTables_
-    ss._info = JSON.stringify({
-      _getTables: ENV.MESSAGES.GET_TABLES
-    });
-    return ss;
+    const boundedSs = getBoundedSpreadsheet_(ss)
+    return boundedSs;
   }
   catch (error) {
     throw new Error(error.stack)
@@ -95,11 +83,8 @@ function openDbByUrl_(url) {
 function openDbByFile_(file) {
   try {
     const ss = SpreadsheetApp.open(file);
-    ss._getTables = getTables_
-    ss._info = JSON.stringify({
-      _getTables: ENV.MESSAGES.GET_TABLES
-    });
-    return ss;
+    const boundedSs = getBoundedSpreadsheet_(ss)
+    return boundedSs;
   }
   catch (error) {
     throw new Error(error.stack)
@@ -174,4 +159,14 @@ function openDb(argument = null) {
   } catch (error) {
     throw new Error(error.stack);
   }
+}
+
+
+
+function getBoundedSpreadsheet_(ss) {
+  ss._getTables = getTables_
+  ss._info = JSON.stringify({
+    _getTables: ENV.MESSAGES.GET_TABLES
+  });
+  return ss;
 }
