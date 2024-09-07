@@ -27,7 +27,7 @@ Overall, Orma empowers developers to efficiently manage data within Google Sheet
     - [Installation](#Installation)
     - [Open Databases and Tables](#Open-Databases-and-Tables)
     - [Crud Operations](#Crud-Operations)
-    - [Validation](#Data-Validation)
+    - [Data Validation](#Data-Validation)
     - [Other Functions](#Other-functions)
 - [Authors](#Authors)
 - [License](#License)
