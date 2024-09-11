@@ -357,7 +357,7 @@ manyUsers._delete();
 ```
 
 ## Data Validation
-Starting from version 7 of Orma, it will be possible to assign a schema to tables, enabling data validation during CRUD operations.
+Starting from version 8 of Orma, it will be possible to assign a schema to tables, enabling data validation during CRUD operations.
 
 ### Install Orma Valid
 Before you start creating table schemas, you will need to install the latest version of the `Orma Valid` library, which provides predefined methods for performing the necessary validations.
