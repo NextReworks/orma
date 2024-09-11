@@ -40,6 +40,8 @@ Overall, Orma empowers developers to efficiently manage data within Google Sheet
 In this paragraph, we will delve into some fundamental aspects of Orma's architecture. 
 These aspects will be crucial for mastering the library.
 ### Extended Classes
+[Back to Table of Contents](#Table-of-Contents)
+
 Orma uses the existing [Spreadsheet](https://developers.google.com/apps-script/reference/spreadsheet/spreadsheet) and [Sheet](https://developers.google.com/apps-script/reference/spreadsheet/sheet) classes and extends them by adding the necessary methods for the ORM.
 
 So, as in the case below, the variables `db` and `users` are indeed instances of the classes `Spreadsheet` and `Sheet`.
@@ -54,6 +56,8 @@ const {users} = tables; //users is the name of the sheet we want to open
 Logger.log(users); //Sheet
 ```
 ### Underscore Prefix & Autocomplete
+[Back to Table of Contents](#Table-of-Contents)
+
 please note that the `_getTables` method starts with an underscore. All methods extended in the Google Apps Script classes start with an underscore to avoid conflicts with native methods.
 
 Google Apps Script does not offer autocomplete suggestions for second-level functions in libraries. For this reason, within the `Spreadsheet` and `Sheet` classes in Orma, a property called `_info` is available, which returns a JSON containing the functions available for that instance.
@@ -88,6 +92,8 @@ Logger.log(users._info);
 
 ```
 ### Data Structure
+[Back to Table of Contents](#Table-of-Contents)
+
 Once you use the ORM and retrieve data from Google Sheets with functions like `_all`, `_find`, `_firstBy`, etc., the returned object or array of objects will also have the `_save` and `delete` functions available. These functions are necessary, as we will see later, to delete and save any changes made to the objects and propagate them to the database. For this reason, the `_info` property is not available in these objects."
 
 Let's see an example to better understand:
@@ -160,9 +166,11 @@ const q = `{}.name === "Matteo"`;
 //This query verifies that the object's name to be analyzed is 'Matteo'. 
 ```
 # Usage
+[Back to Table of Contents](#Table-of-Contents)
 
 
 ## Installation
+[Back to Table of Contents](#Table-of-Contents)
 
 To install Orma insert this script id in the library section of your Google Apps Script Project.
 ```bash
@@ -171,8 +179,11 @@ To install Orma insert this script id in the library section of your Google Apps
 
 
 ## Open Databases and Tables
+[Back to Table of Contents](#Table-of-Contents)
+
 In this section you will learn to open `Databases` (Spreadsheet) and then `Tables` (Sheets). As mentioned above `Databases` are instances of the `Spreadsheet` Class and `Tables` are instances of the `Sheet` Class.
 ### Open a database
+
 A database in the Orma library is a Spreadsheet instance with embedded more methods, so is important to understand that you can use this entity as a Spreadsheet instance and not only as an Orma Database.
 
 Orma introduces the `openDb` method, which deprecates the `openDbById` method that will still be usable until version 10.
@@ -225,6 +236,8 @@ Logging the 'tables' variable will give you an object containing the names of al
 ```
 
 ## Crud Operations
+[Back to Table of Contents](#Table-of-Contents)
+
 In this section, you will learn how to handle all the CRUD operations available in the Orma library.
 
 ### Get All 
@@ -359,6 +372,8 @@ manyUsers._delete();
 ```
 
 ## Data Validation
+[Back to Table of Contents](#Table-of-Contents)
+
 Starting from version 8 of Orma, it will be possible to assign a schema to tables, enabling data validation during CRUD operations.
 
 ### Install Orma Valid
@@ -563,6 +578,8 @@ Let’s take a closer look at the function above: declaring the variable data yo
 
 
 ## Other Functions
+[Back to Table of Contents](#Table-of-Contents)
+
 This section provides various functions designed to facilitate the use of the Orma library, making the user's work simpler and more efficient.
 
 ### ID Generator
@@ -587,21 +604,26 @@ const hashedPassword = ORMA.hash(password, email);
 ```
 
 ## Authors
+[Back to Table of Contents](#Table-of-Contents)
 
 - [@sintropia](https://www.github.com/sintropia)
 
 
 ## License
+[Back to Table of Contents](#Table-of-Contents)
 
 [![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](https://choosealicense.com/licenses/mit/)
 
 
 
 ## Feedback
+[Back to Table of Contents](#Table-of-Contents)
 
 If you have any feedback, please reach out to us at matteo@sintropia.io
 
 
 ## 🔗 Links
+[Back to Table of Contents](#Table-of-Contents)
+
 [![sintropia](https://img.shields.io/badge/sintropia.io-000?style=for-the-badge&logo=ko-fi&logoColor=white)](https://sintropia.io/)
 [![linkedin](https://img.shields.io/badge/linkedin-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://linkedin.com/in/matteoimperiale)
