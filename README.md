@@ -35,6 +35,7 @@ Overall, Orma empowers developers to efficiently manage data within Google Sheet
 - [Links](#Links)
 
 ## Before to start
+[&#x21A9; back to table of contents](#Table-of-Contents)
 In this paragraph, we will delve into some fundamental aspects of Orma's architecture. 
 These aspects will be crucial for mastering the library.
 ### Extended Classes
