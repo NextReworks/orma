@@ -32,3 +32,23 @@ function handleId_(uuid = false) {
     throw new Error(error.stack);
   }
 }
+
+
+/**
+ * Retrieves the keys of all the properties stored in the document's properties.
+ * 
+ * @returns {string[]} An array of keys representing the document's properties.
+ */
+function getProperties(){
+  const properties = PropertiesService.getDocumentProperties();
+  return properties.getKeys()
+}
+
+/**
+ * Deletes a specific property from the document's properties.
+ * 
+ * @param {string} propertyName - The name of the property to delete.
+ */
+function deleteProperty(propertyName){
+  PropertiesService.getDocumentProperties().deleteProperty(propertyName);
+}
