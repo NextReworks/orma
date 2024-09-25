@@ -1,6 +1,12 @@
 # Changelog
 Thanks to this file, you will always be up-to-date on the health status of this library and stay informed about new releases, implementations, and bug fixes.
 
+## [Version 9] - MINOR RELEASE - 2024-09-25
+
+### Added
+- getProperties: Function to get all the stored properties from the PropertiesService
+- deleteProperty: Function to delete a property stored in the PropertiesService
+
 ## [Version 8] - MINOR RELEASE - 2024-09-07
 
 ### Added
