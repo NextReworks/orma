@@ -598,7 +598,7 @@ const properties = ORMA.getProperties(); //it will shows all the keys
 
 #### Deleting a property
 ```javascript
-ORMA.deleteProperty("propertyName); //it will delete the property
+ORMA.deleteProperty("propertyName"); //it will delete the property
 ```
 
 
