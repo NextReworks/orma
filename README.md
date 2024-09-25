@@ -104,7 +104,7 @@ const db = ORMA.openDb(ssId);
 const tables = db._getTables()
 const { users } = tables; //users is the name of the sheet we want to open
 
-const user = users._find("e6021aa4-5685-4cad-a395-922c7db47a39_1717682521060");
+const user = users._find("e6021aa4-565-4cad-a395-922c7db47a39_171762521060");
 Logger.log(user);
 /*
     {
@@ -589,6 +589,18 @@ Orma allows generating unique identifiers for each table. It supports two modes 
 const id = users._id(true) // UUID version
 const incremental = users._id() // Incremental Version
 ```
+By using incremental IDs, Orma will leverage the PropertiesService in Apps Script to store these IDs. You can access and delete the saved properties using the following methods:
+
+#### Getting all the properties
+```javascript
+const properties = ORMA.getProperties(); //it will shows all the keys
+```
+
+#### Deleting a property
+```javascript
+ORMA.deleteProperty("propertyName); //it will delete the property
+```
+
 
 ### Hashing
 This function allows you to hash values as passwords.
